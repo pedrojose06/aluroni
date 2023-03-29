@@ -5,18 +5,18 @@ import styleTema from 'styles/Tema.module.scss';
 import {useNavigate} from 'react-router-dom';
 
 export default function NotFound() {
-  const navigate = useNavigate();
-  return (
-    <div className={className({
-      [style.container]: true,
-      [styleTema.container]: true
-    })}>
-      <div className={style.voltar}>
-        <button onClick={() => navigate(-1)}>
-          {'< Voltar'}
-        </button>
-      </div>
-      <NotFoundImage />
-    </div>
-  );
+    const navigate = useNavigate();
+    return (
+        <div className={className({
+            [style.container]: true,
+            [styleTema.container]: true
+        })}>
+            <div className={style.voltar}>
+                <button onClick={() => navigate(-1)}>
+                    {'< Voltar'}
+                </button>
+            </div>
+            <NotFoundImage />
+        </div>
+    );
 }

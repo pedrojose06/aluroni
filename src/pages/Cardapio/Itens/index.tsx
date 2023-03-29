@@ -2,6 +2,7 @@ import cardapio from 'data/cardapio.json';
 import Item from './Item';
 import style from './Items.module.scss';
 import { useEffect, useState } from 'react';
+import { Cardapio } from 'types/Prato';
 
 interface IItem {
     busca: string;
@@ -11,47 +12,47 @@ interface IItem {
 }
 
 export default function Itens(props: IItem) {
-  const [lista, setLista] = useState(cardapio);
-  const{ busca, filtro, ordenador} = props;
+    const [lista, setLista] = useState(cardapio);
+    const{ busca, filtro, ordenador} = props;
 
-  function testaBusca(title: string){
-    const regex = new RegExp(busca, 'i');
+    function testaBusca(title: string){
+        const regex = new RegExp(busca, 'i');
 
-    return regex.test(title);
-  }
-
-  function testaFiltro(id: number){
-    if(filtro !== null) return filtro ===id;
-    return true;
-  }
-
-  function ordenar(novalista: typeof cardapio){
-    switch(ordenador){
-    case 'porcao':
-      return novalista.sort((a, b) => a.size > b.size ? 1: -1);
-    case 'qtd_pessoas':
-      return novalista.sort((a,b) => a.serving > b.serving ? 1 : -1);
-    case 'preco':
-      return novalista.sort((a, b) => a.price > b.price ? 1 : -1);
-    default:
-      return novalista;
-
+        return regex.test(title);
     }
-  }
 
-  useEffect(() => {
-    const novalista = cardapio.filter(item => testaBusca(item.title) && testaFiltro(item.category.id));
-    setLista(ordenar(novalista));
-  }, [busca, filtro, ordenador]);
+    function testaFiltro(id: number){
+        if(filtro !== null) return filtro ===id;
+        return true;
+    }
 
-  return (
-    <div className={style.itens}>
-      {lista.map((item) => (
-        <Item
-          key={item.id}
-          {...item}
-        />
-      ))}
-    </div>
-  );
+    function ordenar(novalista: Cardapio){
+        switch(ordenador){
+        case 'porcao':
+            return novalista.sort((a, b) => a.size > b.size ? 1: -1);
+        case 'qtd_pessoas':
+            return novalista.sort((a,b) => a.serving > b.serving ? 1 : -1);
+        case 'preco':
+            return novalista.sort((a, b) => a.price > b.price ? 1 : -1);
+        default:
+            return novalista;
+
+        }
+    }
+
+    useEffect(() => {
+        const novalista = cardapio.filter(item => testaBusca(item.title) && testaFiltro(item.category.id));
+        setLista(ordenar(novalista));
+    }, [busca, filtro, ordenador]);
+
+    return (
+        <div className={style.itens}>
+            {lista.map((item) => (
+                <Item
+                    key={item.id}
+                    {...item}
+                />
+            ))}
+        </div>
+    );
 }
